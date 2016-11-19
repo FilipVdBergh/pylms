@@ -194,6 +194,31 @@ class Server(object):
         elif mode=='artists':
             return self.request_with_results("artists 0 50 search:%s" % (term))
 
+    def get_favorites(self):
+        """
+        Returns a flat list of top-level favorite items
+        """
+        request_reply = self.request("favorites items 0 1000 want_url:1").split("id:")
+        del request_reply[0]
+        answer = []
+        labels = ["id:", "name:", "type:", "url:", "isaudio:", "hasitems:"]
+
+        for f in request_reply:
+            positions = []
+            favorite = {}
+            f = "id:"+f
+            for label in labels:
+                positions.append(f.find(label))
+            positions.append(len(f))
+            print positions
+            for i, label in enumerate(labels):
+                #favorite[label[:-1]] = f[positions[i]+len(labels[i])-1:min(positions[i+1], len(f))]
+
+                favorite[label[:-1]] = f[positions[i]++len(labels[i]):positions[i + 1]]
+
+            answer.append(favorite)
+        return answer
+
     def rescan(self, mode='fast'):
         """
         Rescan library
