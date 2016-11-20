@@ -210,12 +210,8 @@ class Server(object):
             for label in labels:
                 positions.append(f.find(label))
             positions.append(len(f))
-            print positions
             for i, label in enumerate(labels):
-                #favorite[label[:-1]] = f[positions[i]+len(labels[i])-1:min(positions[i+1], len(f))]
-
                 favorite[label[:-1]] = f[positions[i]++len(labels[i]):positions[i + 1]]
-
             answer.append(favorite)
         return answer
 
